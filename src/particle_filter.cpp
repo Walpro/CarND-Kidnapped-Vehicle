@@ -79,8 +79,6 @@ void ParticleFilter::prediction(double delta_t, double std_pos[], double velocit
 		particles[i].x = dist_x(gen);
 		particles[i].y = dist_y(gen);
 		particles[i].theta = dist_theta(gen);
-
-		//cout<<"***Prediction done"<<endl;
 	}
 
 }
@@ -135,8 +133,7 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 	}
 	//cout<<"***Update start"<<endl;w
 	// Updating the particle weights
-	for(int i=0;i<num_particles;++i)
-		{
+	for(int i=0;i<num_particles;++i){
 		// Particle coordinates
 		double xp,yp,theta;
 		xp = particles[i].x;
@@ -185,9 +182,7 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 			exponent = pow((xo - xpr),2)/(2 * pow(std_landmark[0],2)) + pow((yo - ypr),2)/(2 * pow(std_landmark[1],2));
 			particles[i].weight = particles[i].weight*exp(-exponent);
 		}
-		//cout<<"***Weight Update Particle: "<<i<<endl;
 		}
-	//cout<<"***Update done "<<endl;
 }
 
 void ParticleFilter::resample() {
@@ -202,25 +197,21 @@ void ParticleFilter::resample() {
 	double beta = 0.0;
 	// nomalizing weights:
 	double sum_w=0;
-	for(int i=0;i<num_particles;++i)
-	{
+	for(int i=0;i<num_particles;++i){
 		sum_w += particles[i].weight;
 	}
-	for(int i=0;i<num_particles;++i)
-	{
+	for(int i=0;i<num_particles;++i){
 		particles[i].weight/=sum_w;
 	}
 
 	// finding max weight;
 	double maxw = particles[0].weight;
 	for(int i=1;i<num_particles;++i){
-		if(particles[i].weight>maxw)
-		{
+		if(particles[i].weight>maxw){
 			maxw = particles[i].weight;
 		}
 	}
-	for (int i=0;i<num_particles;++i)
-	{
+	for (int i=0;i<num_particles;++i){
 		beta += rand() / double(RAND_MAX)*2*maxw;
 		while (beta>particles[index].weight){
 			beta -= particles[index].weight;
@@ -228,10 +219,6 @@ void ParticleFilter::resample() {
 		}
 		particles[i] = particles[index];
 	}
-
-
-
-
 }
 
 Particle ParticleFilter::SetAssociations(Particle particle, std::vector<int> associations, std::vector<double> sense_x, std::vector<double> sense_y)
